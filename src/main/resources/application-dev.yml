@@ -28,6 +28,11 @@ spring:
       initialize-schema: never
     timeout: 1800
 
+cloud:
+  aws:
+    s3:
+      domain: https://s3.ap-northeast-2.amazonaws.com/ktb-community-images-bucket/
+
 logging:
   level:
     root: INFO
