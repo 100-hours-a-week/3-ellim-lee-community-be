@@ -140,6 +140,10 @@ public class PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new ErrorException(ErrorCode.NOT_FOUND));
 
+        if (post.getStatus() != 0) {
+            throw new ErrorException(ErrorCode.NOT_FOUND);
+        }
+
         post.getPostStat().incrementViewCount();
         postRepository.save(post);
 
