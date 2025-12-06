@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum ErrorCode {
     // 400
+    BAD_REQUEST(HttpStatus.BAD_REQUEST, "BAD_REQUEST", "잘못된 요청입니다."),
     VALIDATION_FAILED(HttpStatus.BAD_REQUEST,  "VALIDATION_ERROR", "요청 데이터가 올바르지 않습니다."),
 
     // 401

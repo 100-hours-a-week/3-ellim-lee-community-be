@@ -21,6 +21,7 @@ import gguip1.community.domain.user.entity.User;
 import gguip1.community.domain.user.repository.UserRepository;
 import gguip1.community.global.exception.ErrorCode;
 import gguip1.community.global.exception.ErrorException;
+import gguip1.community.global.util.ImageUriProvider;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,8 @@ public class PostService {
     private final PostImageRepository postImageRepository;
     private final UserRepository userRepository;
     private final PostLikeRepository postLikeRepository;
+
+    private final ImageUriProvider imageUriProvider;
 
     private final PostMapper postMapper;
 
@@ -98,6 +101,9 @@ public class PostService {
                 .map(post -> {
                     User user = post.getUser();
 
+                    String profileImageKey = user.getProfileImage() != null ? user.getProfileImage().getS3_key() : null;
+                    String profileImageFullUrl = imageUriProvider.generateUrl(profileImageKey);;
+
                     List<ImageResponse> images = post.getPostImages().stream()
                             .map(postImageMapper::toImageResponse)
                             .toList();
@@ -109,7 +115,7 @@ public class PostService {
                             .content(post.getContent())
                             .author(new AuthorResponse(
                                     user.getNickname(),
-                                    user.getProfileImage() != null ? user.getProfileImage().getUrl() : null
+                                    user.getProfileImage() != null ? profileImageFullUrl : null
                             ))
                             .createdAt(post.getCreatedAt())
                             .likeCount(post.getPostStat().getLikeCount())
@@ -139,6 +145,9 @@ public class PostService {
 
         User user = post.getUser();
 
+        String profileImageKey = user.getProfileImage() != null ? user.getProfileImage().getS3_key() : null;
+        String profileImageFullUrl = imageUriProvider.generateUrl(profileImageKey);;
+
         List<ImageResponse> images = post.getPostImages().stream()
                 .map(postImageMapper::toImageResponse)
                 .toList();
@@ -152,7 +161,7 @@ public class PostService {
                 .content(post.getContent())
                 .author(new AuthorResponse(
                         user.getNickname(),
-                        user.getProfileImage() != null ? user.getProfileImage().getUrl() : null
+                        user.getProfileImage() != null ? profileImageFullUrl : null
                 ))
                 .createdAt(post.getCreatedAt())
                 .likeCount(post.getPostStat().getLikeCount())

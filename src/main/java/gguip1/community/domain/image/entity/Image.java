@@ -1,6 +1,5 @@
 package gguip1.community.domain.image.entity;
 
-import gguip1.community.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -21,8 +20,8 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long imageId;
 
-    @Column(name = "url", nullable = false)
-    private String url;
+    @Column(name = "s3_key", nullable = false)
+    private String s3_key;
 
     @Builder.Default
     @Column(name = "status", nullable = false)

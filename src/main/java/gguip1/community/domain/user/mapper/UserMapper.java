@@ -6,15 +6,23 @@ import gguip1.community.domain.user.dto.request.UserCreateRequest;
 import gguip1.community.domain.user.dto.response.UserResponse;
 import gguip1.community.domain.user.dto.response.UserUpdateResponse;
 import gguip1.community.domain.user.entity.User;
+import gguip1.community.global.util.ImageUriProvider;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class UserMapper {
+    private final ImageUriProvider imageUriProvider;
+
     public UserResponse toResponse(User user) {
+        String imageKey = user.getProfileImage() != null ? user.getProfileImage().getS3_key() : null;
+        String fullUrl = imageUriProvider.generateUrl(imageKey);
+
         return UserResponse.builder()
                 .userId(user.getUserId())
                 .email(user.getEmail())
-                .profileImageUrl(user.getProfileImage() != null ? user.getProfileImage().getUrl() : null)
+                .profileImageUrl(fullUrl)
                 .nickname(user.getNickname())
                 .build();
     }
@@ -29,20 +37,26 @@ public class UserMapper {
     }
 
     public AuthResponse toAuthResponse(User user) {
+        String imageKey = user.getProfileImage() != null ? user.getProfileImage().getS3_key() : null;
+        String fullUrl = imageUriProvider.generateUrl(imageKey);
+
         return AuthResponse.builder()
                 .userId(user.getUserId())
                 .email(user.getEmail())
-                .profileImageUrl(user.getProfileImage() != null ? user.getProfileImage().getUrl() : null)
+                .profileImageUrl(fullUrl)
                 .nickname(user.getNickname())
                 .build();
     }
 
     public UserUpdateResponse toUserUpdateResponse(User user) {
-        return new UserUpdateResponse(
-                user.getUserId(),
-                user.getEmail(),
-                user.getProfileImage() != null ? user.getProfileImage().getUrl() : null,
-                user.getNickname()
-        );
+        String imageKey = user.getProfileImage() != null ? user.getProfileImage().getS3_key() : null;
+        String fullUrl = imageUriProvider.generateUrl(imageKey);
+
+        return UserUpdateResponse.builder()
+                .userId(user.getUserId())
+                .email(user.getEmail())
+                .profileImageUrl(fullUrl)
+                .nickname(user.getNickname())
+                .build();
     }
 }

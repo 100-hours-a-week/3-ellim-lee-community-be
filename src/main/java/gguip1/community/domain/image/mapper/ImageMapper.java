@@ -5,9 +5,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ImageMapper {
-    public Image toEntity(String url) {
+    public Image toEntity(String s3_key) {
         return Image.builder()
-                .url(url)
+                .s3_key(s3_key)
                 .build();
     }
 }

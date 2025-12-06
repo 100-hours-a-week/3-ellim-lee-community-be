@@ -1,5 +1,8 @@
 package gguip1.community.domain.user.dto.response;
 
+import lombok.Builder;
+
+@Builder
 public record UserUpdateResponse(
         Long userId,
         String email,
