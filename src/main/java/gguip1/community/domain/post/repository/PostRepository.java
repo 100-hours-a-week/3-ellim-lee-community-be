@@ -20,7 +20,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query(value = """
         SELECT * FROM posts
-        WHERE status = 0 AND :lastPostId IS NULL OR post_id < :lastPostId
+        WHERE status = 0 AND (:lastPostId IS NULL OR post_id < :lastPostId)
         ORDER BY post_id DESC
         LIMIT :limit""", nativeQuery = true)
     List<Post> findNextPage(@Param("lastPostId") Long lastPostId, @Param("limit") int limit);
